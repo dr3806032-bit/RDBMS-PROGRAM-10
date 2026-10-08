@@ -1,0 +1,31 @@
+name: RDBMS Autograding
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  autograding:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-server
+
+      - name: Start MySQL
+        run: |
+          sudo systemctl start mysql
+
+      - name: Setup Database
+        run: |
+          sudo mysql < starter.sql
+
+      - name: Run Tests
+        run: |
+          sudo mysql < test.sql
